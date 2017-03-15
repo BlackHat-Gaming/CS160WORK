@@ -27,12 +27,17 @@ namespace Chapter_9_Problem_5
             //Parsing
             bool valid = double.TryParse(enteredMiles, out miles);
             bool check = double.TryParse(enteredGallons, out gallons);
+            double milesPerGallon = miles / gallons;
             //check
-            if(valid && check && miles >= 0 && gallons >= 0)
+            if (valid && check && miles >= 0 && gallons >= 0)
             {
                 Result.Left = 25;
-                Result.Text = city + " gave you an average miles/gallon of " + 
-                    Convert.ToString(miles / gallons);
+                Result.Text = city + " gave you an average miles/gallon of " +
+                    milesPerGallon.ToString("F2");
+            }
+            else
+            {
+                Result.Text = "You did not enter valid values.";
             }
         }
         private void Reset_Click(object sender, EventArgs e)

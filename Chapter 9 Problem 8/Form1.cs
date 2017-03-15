@@ -28,10 +28,12 @@ namespace Chapter_9_Problem_8
             {
                 milesPerHour = distance / time;
                 result.Left = 75;
-                result.Text = Convert.ToString(milesPerHour) + " Miles per hour";
+                result.Text = milesPerHour.ToString("F2") + " Miles per hour";
             }
             else
                 result.Text = "Please enter valid values.";
+              }
         }
+    
     }
-}
+

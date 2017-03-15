@@ -45,9 +45,8 @@
             this.result.ForeColor = System.Drawing.Color.Red;
             this.result.Location = new System.Drawing.Point(119, 208);
             this.result.Name = "result";
-            this.result.Size = new System.Drawing.Size(54, 22);
+            this.result.Size = new System.Drawing.Size(0, 22);
             this.result.TabIndex = 0;
-            this.result.Text = "label1";
             // 
             // title
             // 
@@ -116,6 +115,7 @@
             // 
             // Form1
             // 
+            this.AcceptButton = this.Calculate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;

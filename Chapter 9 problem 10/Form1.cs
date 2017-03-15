@@ -15,6 +15,7 @@ namespace Chapter_9_problem_10
         public Form1()
         {
             InitializeComponent();
+            resetBtn.Hide();
         }
         private int counter;
         private int target;
@@ -30,7 +31,8 @@ namespace Chapter_9_problem_10
             resetBtn.Hide();
             counter = 0;
             Cnt.Text = "Number of Guesses: " + counter;
-            this.BackColor = System.Drawing.Color.SteelBlue;
+            result.Text = "";
+            this.BackColor = System.Drawing.Color.DarkRed;
         }
         private void guessBtn_Click(object sender, EventArgs e)
         {
@@ -64,6 +66,5 @@ namespace Chapter_9_problem_10
             else
                 result.Text = "Try Again";
         }
-
     }
 }

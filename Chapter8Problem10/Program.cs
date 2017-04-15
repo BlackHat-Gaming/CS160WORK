@@ -11,73 +11,12 @@ namespace Chapter8Problem10
         static void Main(string[] args)
         {
             //variables
-            string city;
-            bool cityCheck;
-            bool timeCheck;
-            bool depthCheck;
-            double time = 0;
-            int cityPosition = 0;
-            int timePosition = 0;
-            bool continueCheck = true;
             double averageDepthCity = 0;
             double averageDepthTime = 0;
             double[,] depth = new double[5, 6];
-            double deep = 0;
             //program start
-            while (continueCheck)
-            {
-                Console.WriteLine("Welcome to the Depth Recorder!\n");
-                MakeChoiceCity(out city, out cityPosition, out cityCheck);
-                MakeChoiceTime(out time,out timePosition, city, out timeCheck);
-                if (cityPosition <= 4 && cityPosition >= 0 && timePosition <= 3 && timePosition >= 0
-                && cityCheck && timeCheck)
-                {
-                    deep = EnterDepth(out depthCheck);
-                    if (depthCheck)
-                    {
-                        depth[timePosition, cityPosition] = deep;
-                    }
-                    else
-                    {
-                        Console.WriteLine("You have entered an invalid answer");
-                        Console.ReadKey();
-                        depth[timePosition, cityPosition] = 0;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("You have entered an invalid answer");
-                    Console.ReadKey();
-                }
-                Console.WriteLine("Would you like to enter another value? Y/N");
-                if (Console.ReadLine() == "Y")
-                {
-                    continueCheck = true;
-                    Console.Clear();
-                }
-                else
-                {
-                    continueCheck = false;
-                    Console.Clear();
-                }
-                //gets averages
-            }
-            for (int c = 0; c < depth.GetLength(1); c++)
-            {
-                for (int i = 0; i < 5; i++)
-                    averageDepthCity += depth[i, c];
-                averageDepthCity = averageDepthCity / 4;
-                depth[4, c] = averageDepthCity;
-                averageDepthCity = 0;
-            }
-            for (int r = 0; r < depth.GetLength(0); r++)
-            {
-                for (int i = 0; i < 5; i++)
-                    averageDepthTime += depth[r, i];
-                averageDepthTime = averageDepthTime / 5;
-                depth[r, 5] = averageDepthTime;
-                averageDepthTime = 0;
-            }
+            RetrieveData(depth);
+            CalculateData(out averageDepthCity, out averageDepthTime, depth);
             DisplayChart(depth);
             Console.ReadKey();
         }
@@ -89,14 +28,13 @@ namespace Chapter8Problem10
             city = "";
             Console.WriteLine("Please select the city you would like" +
                               " to enter a depth for.");
-            Console.WriteLine("1.) Surf City\n2.) Solomons\n3.) Hilton Head"+
-                              "\n4.) Miami\n5.) Savannah/n");
+            Console.WriteLine("1.) Surf City\n2.) Solomons\n3.) Hilton Head" +
+                              "\n4.) Miami\n5.) Savannah\n");
             Console.Write("Your choice(Type the labeled #): ");
             valid = int.TryParse(Console.ReadLine(), out numb1);
             city = CityCheck(numb1, city);
             numb1--;
         }
-
         //Allows user to enter time
         static void MakeChoiceTime(out double time, out int numb1, string city, out bool valid)
         {
@@ -110,8 +48,30 @@ namespace Chapter8Problem10
             time = TimeCheck(numb1, time);
             numb1--;
         }
+        //Displays Table
+        static void DisplayChart(double[,] depth)
+        {
+            string title = "Depth Chart";
+            string bar = "********************************************";
+            Console.WriteLine("{0,53}\n{1,67}", title, bar);
+            Console.WriteLine("\t\tSurf City\tSolomons\tHilton Head\tMiami\tSavannah\tTime Averages");
+            Console.WriteLine("7:00 A.M. {0,12}{1,15}{2,18}{3,12}{4,9}{5,20}"
+                            , depth[0, 0].ToString("f"), depth[0, 1].ToString("f"), depth[0, 2].ToString("f"), depth[0, 3].ToString("f")
+                            , depth[0, 4].ToString("f"), depth[0, 5].ToString("f"));
+            Console.WriteLine("12:00 Noon {0,11}{1,15}{2,18}{3,12}{4,9}{5,20}"
+                            , depth[1, 0].ToString("f"), depth[1, 1].ToString("f"), depth[1, 2].ToString("f"), depth[1, 3].ToString("f")
+                            , depth[1, 4].ToString("f"), depth[1, 5].ToString("f"));
+            Console.WriteLine("5:00 P.M. {0,12}{1,15}{2,18}{3,12}{4,9}{5,20}"
+                            , depth[2, 0].ToString("f"), depth[2, 1].ToString("f"), depth[2, 2].ToString("f"), depth[2, 3].ToString("f")
+                            , depth[2, 4].ToString("f"), depth[2, 5].ToString("f"));
+            Console.WriteLine("9:00 P.M. {0,12}{1,15}{2,18}{3,12}{4,9}{5,20}"
+                            , depth[3, 0].ToString("f"), depth[3, 1].ToString("f"), depth[3, 2].ToString("f"), depth[3, 3].ToString("f")
+                            , depth[3, 4].ToString("f"), depth[3, 5].ToString("f"));
+            Console.WriteLine("City Averages: {0,7}{1,15}{2,18}{3,12}{4,9}"
+                            , depth[4, 0].ToString("f"), depth[4, 1].ToString("f"), depth[4, 2].ToString("f"), depth[4, 3].ToString("f")
+                            , depth[4, 4].ToString("f"));
 
-        //Allows user to enter depth
+        }
         static double EnterDepth(out bool valid)
         {
             double depth;
@@ -120,32 +80,8 @@ namespace Chapter8Problem10
             valid = double.TryParse(entered, out depth);
             return depth;
         }
-        //Displays Table
-        static void DisplayChart(double[,] depth)
-        {
-            string title = "Depth Chart";
-            string bar = "********************************************";
-            Console.WriteLine("{0,53}\n{1,67}",title, bar);
-            Console.WriteLine("\t\tSurf City\tSolomons\tHilton Head\tMiami\tSavannah\tTime Averages");
-            Console.WriteLine("7:00 A.M. {0,12}{1,15}{2,18}{3,12}{4,9}{5,20}"               
-                            , depth[0, 0].ToString("f"), depth[0, 1].ToString("f"), depth[0, 2].ToString("f"), depth[0, 3].ToString("f")
-                            , depth[0, 4].ToString("f"), depth[0,5].ToString("f"));
-            Console.WriteLine("12:00 Noon {0,11}{1,15}{2,18}{3,12}{4,9}{5,20}"
-                            ,depth[1, 0].ToString("f"), depth[1, 1].ToString("f"), depth[1, 2].ToString("f"), depth[1, 3].ToString("f")
-                            , depth[1, 4].ToString("f"), depth[1,5].ToString("f"));
-            Console.WriteLine("5:00 P.M. {0,12}{1,15}{2,18}{3,12}{4,9}{5,20}"
-                            , depth[2, 0].ToString("f"), depth[2, 1].ToString("f"), depth[2, 2].ToString("f"), depth[2, 3].ToString("f")
-                            , depth[2, 4].ToString("f"), depth[2,5].ToString("f"));
-            Console.WriteLine("9:00 P.M. {0,12}{1,15}{2,18}{3,12}{4,9}{5,20}"
-                            , depth[3, 0].ToString("f"), depth[3, 1].ToString("f"), depth[3, 2].ToString("f"), depth[3, 3].ToString("f")
-                            , depth[3, 4].ToString("f"), depth[3,5].ToString("f"));
-            Console.WriteLine("City Averages: {0,7}{1,15}{2,18}{3,12}{4,9}"
-                            , depth[4, 0].ToString("f"), depth[4, 1].ToString("f"), depth[4, 2].ToString("f"), depth[4, 3].ToString("f")
-                            , depth[4, 4].ToString("f"));
-
-        }
         //method encapsulation for checking time
-        private static double TimeCheck(int numb1, double time)
+        static double TimeCheck(int numb1, double time)
         {
             switch (numb1)
             {
@@ -168,8 +104,8 @@ namespace Chapter8Problem10
             }
             return time;
         }
-        //encapsulation of CityMethod
-        private static string CityCheck(int numb1, string city)
+        //encapsulation of CityMethod        
+        static string CityCheck(int numb1, string city)
         {
             switch (numb1)
             {
@@ -194,6 +130,81 @@ namespace Chapter8Problem10
                     break;
             }
             return city;
+
         }
+        static void RetrieveData(double[,] depth)
+        {
+            double deep = 0;
+            bool depthCheck;
+            string city;
+            bool cityCheck;
+            bool timeCheck;
+            double time = 0;
+            int cityPosition = 0;
+            int timePosition = 0;
+            bool continueCheck = true;
+            while (continueCheck)
+            {
+                Console.WriteLine("Welcome to the Depth Recorder!\n");
+                MakeChoiceCity(out city, out cityPosition, out cityCheck);
+                MakeChoiceTime(out time, out timePosition, city, out timeCheck);
+                if (cityPosition <= 4 && cityPosition >= 0 && timePosition <= 3 && timePosition >= 0
+                && cityCheck && timeCheck)
+                {
+                    deep = EnterDepth(out depthCheck);
+                    if (depthCheck)
+                    {
+                        depth[timePosition, cityPosition] = deep;
+                    }
+                    else
+                    {
+                        Console.WriteLine("You have entered an invalid answer");
+                        Console.ReadKey();
+                        depth[timePosition, cityPosition] = 0;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("You have entered an invalid answer");
+                    Console.ReadKey();
+                }
+
+
+                Console.WriteLine("Would you like to enter another value? Y/N");
+                if (Console.ReadLine() == "Y")
+                {
+                    continueCheck = true;
+                    Console.Clear();
+                }
+                else
+                {
+                    continueCheck = false;
+                    Console.Clear();
+                }
+
+            }
+            }
+        static void CalculateData(out double averageDepthCity, out double averageDepthTime, double[,] depth)
+        {
+            averageDepthCity = 0;
+            averageDepthTime = 0;
+            for (int c = 0; c < 4; c++)
+            {
+                for (int i = 0; i < 5; i++)
+                    averageDepthCity += depth[i, c];
+                averageDepthCity = averageDepthCity / 4;
+                depth[4, c] = averageDepthCity;
+                averageDepthCity = 0;
+            }
+            for (int r = 0; r < 5; r++)
+            {
+                for (int i = 0; i < 5; i++)
+                    averageDepthTime += depth[r, i];
+                averageDepthTime = averageDepthTime / 5;
+                depth[r, 5] = averageDepthTime;
+                averageDepthTime = 0;
+            }
+        }
+
     }
 }

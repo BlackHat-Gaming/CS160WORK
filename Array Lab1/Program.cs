@@ -9,50 +9,62 @@ namespace Array_Lab1
     {
         static void Main(string[] args)
         {
-            bool keepGoing = true;
-            bool scoreValidation;
-            bool difficultyValidation;
-            double highScore = 0;
-            double lowScore = 0;
-            double sumOfScores = 0;
-            double lastScore = 0;
-            double difficultyLevel;
             double[] judge = new double[7];
+            int numb = 1;
             //start
             Console.WriteLine("Welcome to the Diver Score Calculator!");
+            RetrieveData(judge, numb);
+            Console.WriteLine("\nPlease enter difficulty of the dive.\nRange: 1.2 - 3.8");
+            DisplayData(judge);
+        }
+        static void RetrieveData(double[] judge, int numb)
+        {
+            bool scoreValidation;
             for (int i = 0; i < judge.Length;)
             {
+                Console.Write("Judge {0} please enter your score (Ranges 0 - 10): ", numb);
                 judge[i] = EnterScore(out scoreValidation);
-                if (scoreValidation && judge[i] >= 0 && judge [i] <= 10)
+                if (scoreValidation && judge[i] >= 0 && judge[i] <= 10)
+                {
                     i++;
+                    numb++;
+                }
                 else
                     Console.WriteLine("You entered an invalid value.");
             }
-            Console.WriteLine("\nPlease enter difficulty of the dive.\nRange: 1.2 - 3.8");
-            //entering difficulty
+        }
+        static void DisplayData(double[] judge)
+        {
+            bool keepGoing = true;
+            double difficultyLevel;
+            double lastScore = 0;
+            bool difficultyValidation;
             while (keepGoing)
             {
                 difficultyLevel = EnterDifficulty(out difficultyValidation);
                 if (difficultyValidation && difficultyLevel >= 1.2 && difficultyLevel <= 3.8)
                 {
-                    highScore = judge.Max();
-                    lowScore = judge.Min();
-                    sumOfScores = judge.Sum();
-                    sumOfScores -= (highScore + lowScore);
-                    lastScore = sumOfScores * difficultyLevel * .6;
+                    CalculateScore(judge, out lastScore, ref difficultyLevel);
                     Console.WriteLine("The final score is {0}", lastScore);
                     Console.ReadKey();
                     break;
                 }
                 else
                     Console.WriteLine("You entered an invalid value.");
-                    keepGoing = true;
+                keepGoing = true;
             }
             Console.ReadKey();
         }
+        static double CalculateScore(double[] judge, out double lastScore, ref double difficultyLevel)
+        {
+            double highScore = judge.Max();
+            double lowScore = judge.Min();
+            double sumOfScores = judge.Sum();
+            sumOfScores -= (highScore + lowScore);
+            return lastScore = sumOfScores * difficultyLevel * .6;
+        }
         static double EnterScore(out bool valid)
         {
-            Console.Write("Please enter your score: ");
             string entered = Console.ReadLine();
             double score;
             valid = double.TryParse(entered, out score);
